@@ -1,0 +1,14 @@
+apply plugin: "kotlin"
+
+repositories {
+  jcenter()
+}
+
+dependencies {
+  compileOnly "com.github.shyiko.ktlint:ktlint-core:$ktlintVersion"
+
+  testCompile "junit:junit:4.12"
+  testCompile "org.assertj:assertj-core:3.10.0"
+  testCompile "com.github.shyiko.ktlint:ktlint-core:$ktlintVersion"
+  testCompile "com.github.shyiko.ktlint:ktlint-test:$ktlintVersion"
+}
