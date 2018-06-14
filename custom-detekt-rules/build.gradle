@@ -1,0 +1,14 @@
+apply plugin: "kotlin"
+
+repositories {
+  jcenter()
+}
+
+dependencies {
+  compileOnly "io.gitlab.arturbosch.detekt:detekt-api:$detektVersion"
+
+  testCompile "junit:junit:4.12"
+  testCompile "org.assertj:assertj-core:3.10.0"
+  testCompile "io.gitlab.arturbosch.detekt:detekt-api:$detektVersion"
+  testCompile "io.gitlab.arturbosch.detekt:detekt-test:$detektVersion"
+}

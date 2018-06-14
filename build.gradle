@@ -1,0 +1,26 @@
+buildscript {
+  ext.kotlinVersion = "1.2.41"
+  ext.ktlintVersion = "0.23.1"
+  ext.detektVersion = "1.0.0.RC7-2"
+
+  repositories {
+    mavenCentral()
+    google()
+    gradlePluginPortal()
+  }
+
+  dependencies {
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    classpath "com.github.ben-manes:gradle-versions-plugin:0.18.0"
+
+    // Lint.
+    classpath "com.android.tools.build:gradle:3.2.0-alpha18"
+  }
+}
+
+apply plugin: "com.github.ben-manes.versions"
+
+wrapper {
+  gradleVersion = "4.8"
+  distributionType = Wrapper.DistributionType.ALL
+}
