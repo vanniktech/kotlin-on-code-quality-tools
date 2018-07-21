@@ -10,8 +10,8 @@ import io.gitlab.arturbosch.detekt.api.Severity
 import org.jetbrains.kotlin.psi.KtImportDirective
 
 class NoInternalImportRule(config: Config = Config.empty) : Rule(config) {
-  override val issue = Issue(javaClass.simpleName, Severity.Style,
-      "Don't import packages from an internal package as they are subject to change.",
+  override val issue = Issue(javaClass.simpleName, Severity.Maintainability,
+      "Don't import from an internal package as they are subject to change.",
       Debt.TWENTY_MINS)
 
   override fun visitImportDirective(importDirective: KtImportDirective) {
