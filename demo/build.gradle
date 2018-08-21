@@ -14,6 +14,11 @@ dependencies {
 
 apply plugin: "com.android.lint"
 
+lintOptions {
+  abortOnError true
+  warningsAsErrors true
+}
+
 // Detekt.
 
 configurations {
