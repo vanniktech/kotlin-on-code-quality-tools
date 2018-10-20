@@ -39,7 +39,7 @@ task detekt(type: JavaExec, group: "verification", description: "Runs detekt.") 
   outputs.dir(output.toString())
   main = "io.gitlab.arturbosch.detekt.cli.Main"
   classpath = project.configurations.detekt
-  args = [ "--config", configFile, "--input", project.file("."), "--output", output ]
+  args = [ "--config", configFile, "--input", project.file("."), "--report", "plain:$output/plain.txt,xml:$output/checkstyle.xml,html:$output/report.html" ]
 }
 
 // We don't want them to be checked too since this is a demo and it's supposed to fail here.

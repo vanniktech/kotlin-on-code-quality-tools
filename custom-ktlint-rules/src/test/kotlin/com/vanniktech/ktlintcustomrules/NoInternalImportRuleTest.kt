@@ -6,13 +6,13 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 class NoInternalImportRuleTest {
-  @Test fun noWildcardImportsRule() {
+  @Test fun noInternalImports() {
     assertThat(NoInternalImportRule().lint("""
         import a.b.c
         import a.internal.foo
         """.trimIndent()
     )).containsExactly(
-        LintError(2, 1, "no-internal-import", "Importing from an internal package")
+        LintError(2, 1, "no-internal-import", "Importing 'a.internal.foo' which is an internal import.")
     )
   }
 }

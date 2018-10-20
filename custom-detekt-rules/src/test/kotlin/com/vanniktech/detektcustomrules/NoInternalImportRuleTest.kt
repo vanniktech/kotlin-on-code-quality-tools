@@ -5,7 +5,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 class NoInternalImportRuleTest {
-  @Test fun noWildcardImportsRule() {
+  @Test fun noInternalImports() {
     val findings = NoInternalImportRule().lint("""
         import a.b.c
         import a.internal.foo

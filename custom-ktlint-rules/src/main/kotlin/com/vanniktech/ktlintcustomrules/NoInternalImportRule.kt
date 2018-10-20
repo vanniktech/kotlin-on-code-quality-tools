@@ -11,8 +11,8 @@ class NoInternalImportRule : Rule("no-internal-import") {
     if (node.elementType == KtStubElementTypes.IMPORT_DIRECTIVE) {
       val importDirective = node.psi as KtImportDirective
       val path = importDirective.importPath?.pathStr
-      if (path != null && path.contains("internal")) {
-        emit(node.startOffset, "Importing from an internal package", false)
+      if (path?.contains("internal") == true) {
+        emit(node.startOffset, "Importing '$path' which is an internal import.", false)
       }
     }
   }
