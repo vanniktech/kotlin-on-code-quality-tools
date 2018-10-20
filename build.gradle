@@ -1,7 +1,7 @@
 buildscript {
-  ext.kotlinVersion = "1.2.60"
-  ext.ktlintVersion = "0.27.0"
-  ext.detektVersion = "1.0.0.RC8"
+  ext.kotlinVersion = "1.2.71"
+  ext.ktlintVersion = "0.29.0"
+  ext.detektVersion = "1.0.0.RC9.2"
 
   repositories {
     mavenCentral()
@@ -14,13 +14,13 @@ buildscript {
     classpath "com.github.ben-manes:gradle-versions-plugin:0.20.0"
 
     // Lint.
-    classpath "com.android.tools.build:gradle:3.2.0-beta05"
+    classpath "com.android.tools.build:gradle:3.3.0-alpha13"
   }
 }
 
 apply plugin: "com.github.ben-manes.versions"
 
 wrapper {
-  gradleVersion = "4.9"
+  gradleVersion = "4.10.2"
   distributionType = Wrapper.DistributionType.ALL
 }
