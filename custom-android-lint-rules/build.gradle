@@ -1,0 +1,21 @@
+apply plugin: "kotlin"
+
+repositories {
+  google()
+  mavenCentral()
+  jcenter()
+}
+
+dependencies {
+  compileOnly "com.android.tools.lint:lint-api:26.3.0-beta04"
+  compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+
+  testImplementation "com.android.tools.lint:lint:26.3.0-beta04"
+  testImplementation "com.android.tools.lint:lint-tests:26.3.0-beta04"
+}
+
+jar {
+  manifest {
+    attributes('Lint-Registry-v2': 'com.vanniktech.androidlintcustomrules.CustomIssueRegistry')
+  }
+}
