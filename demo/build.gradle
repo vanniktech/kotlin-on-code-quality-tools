@@ -17,6 +17,12 @@ apply plugin: "com.android.lint"
 lintOptions {
   abortOnError true
   warningsAsErrors true
+  // baseline project.file("baseline-lint.xml")
+}
+
+dependencies {
+  // Unfortunately this does not quite work for Kotlin projects - https://issuetracker.google.com/issues/112526243
+  lintChecks project(":custom-android-lint-rules")
 }
 
 // Detekt.
@@ -26,7 +32,6 @@ configurations {
 }
 
 dependencies {
-  //noinspection AndroindLintGradleDependency https://issuetracker.google.com/issues/109956042
   detekt "io.gitlab.arturbosch.detekt:detekt-cli:$detektVersion"
   detekt project(":custom-detekt-rules")
 }
@@ -35,11 +40,18 @@ def output = new File(project.buildDir, "reports/detekt/")
 
 task detekt(type: JavaExec, group: "verification", description: "Runs detekt.") {
   def configFile = file("code_quality_tools/detekt.yml")
-  inputs.files(project.fileTree(dir: "src", include: "**/*.kt"), configFile)
-  outputs.dir(output.toString())
+
   main = "io.gitlab.arturbosch.detekt.cli.Main"
   classpath = project.configurations.detekt
-  args = [ "--config", configFile, "--input", project.file("."), "--report", "plain:$output/plain.txt,xml:$output/checkstyle.xml,html:$output/report.html" ]
+  args = [
+    "--config", configFile,
+    "--input", project.file("."),
+    "--report", "txt:$output/plain.txt,xml:$output/checkstyle.xml,html:$output/report.html"
+  ]
+
+  // To make this Gradle task incremental - https://medium.com/@vanniktech/making-your-gradle-tasks-incremental-7f26e4ef09c3
+  inputs.files(project.fileTree(dir: "src", include: "**/*.kt"), configFile)
+  outputs.dir(output.toString())
 }
 
 // We don't want them to be checked too since this is a demo and it's supposed to fail here.
@@ -59,26 +71,37 @@ dependencies {
 def outputDir = "${project.buildDir}/reports/ktlint/"
 
 task ktlint(type: JavaExec, group: "verification", description: "Runs ktlint.") {
-  inputs.files(fileTree(dir: "src", include: "**/*.kt"),
-      fileTree(dir: ".", include: "**/.editorconfig"))
-  outputs.dir(outputDir)
   main = "com.github.shyiko.ktlint.Main"
   classpath = configurations.ktlint
-  args = [ "--reporter=plain",
+  args = [
+    "--reporter=plain",
     "--reporter=checkstyle,output=${outputDir}ktlint-checkstyle-report.xml",
-    "src/**/*.kt" ]
+    "src/**/*.kt"
+  ]
+
+  // To make this Gradle task incremental - https://medium.com/@vanniktech/making-your-gradle-tasks-incremental-7f26e4ef09c3
+  inputs.files(
+    fileTree(dir: "src", include: "**/*.kt"),
+    fileTree(dir: ".", include: "**/.editorconfig")
+  )
+  outputs.dir(outputDir)
 }
 
 task ktlintFormat(type: JavaExec, group: "formatting") {
+  description = "Runs ktlint and autoformats your code."
+  main = "com.github.shyiko.ktlint.Main"
+  classpath = configurations.ktlint
+  args = [
+    "-F",
+    "src/**/*.kt"
+  ]
+
+  // To make this Gradle task incremental - https://medium.com/@vanniktech/making-your-gradle-tasks-incremental-7f26e4ef09c3
   inputs.files(
     fileTree(dir: "src", include: "**/*.kt"),
     fileTree(dir: ".", include: "**/.editorconfig")
   )
   outputs.upToDateWhen { true }
-  description = "Runs ktlint and autoformats your code."
-  main = "com.github.shyiko.ktlint.Main"
-  classpath = configurations.ktlint
-  args = [ "-F", "src/**/*.kt" ]
 }
 
 // We don't want them to be checked too since this is a demo and it's supposed to fail here.
